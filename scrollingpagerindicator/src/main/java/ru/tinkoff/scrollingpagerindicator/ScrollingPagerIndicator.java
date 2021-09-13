@@ -357,8 +357,8 @@ public class ScrollingPagerIndicator extends View {
                 }
             }
             else { // Vertical orientation
-                scaleDotByOffset(page - 1, offset);
-                scaleDotByOffset(page, 1 - offset);
+                scaleDotByOffset(page, offset);
+                scaleDotByOffset(page + 1, 1 - offset);
             }
 
             invalidate();
