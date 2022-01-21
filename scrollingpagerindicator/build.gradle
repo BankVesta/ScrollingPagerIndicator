@@ -1,11 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$project.rootDir/gradle/publish-lib.gradle"
 
-def customGradleScript = "$project.rootDir/gradle/local.gradle"
-if(new File(customGradleScript).exists()){
-    apply from: customGradleScript
-}
-
 android {
     compileSdkVersion rootProject.compileSdk
 

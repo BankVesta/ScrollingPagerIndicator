@@ -15,25 +15,24 @@
  */
 apply plugin: 'maven-publish'
 
-def getEnvValueOrEmpty(String key) {
-    String value = System.getenv(key)
-    return value != null ? value : ""
+def isReleaseBuild() {
+    return VERSION_NAME.contains("SNAPSHOT") == false
 }
 
 def getReleaseRepository() {
-    return getEnvValueOrEmpty("PRIVATE_NEXUS_RELEASE_URL")
+    return "https://nexus.vestabankdev.ru/repository/maven-releases/"
 }
 
 def getSnapshotRepository() {
-    return getEnvValueOrEmpty("PRIVATE_NEXUS_SNAPSHOT_URL")
+    return "https://nexus.vestabankdev.ru/repository/maven-snapshots/"
 }
 
 def getRepositoryUsername() {
-    return getEnvValueOrEmpty("PRIVATE_NEXUS_USER")
+    return hasProperty('SONATYPE_NEXUS_USERNAME') ? SONATYPE_NEXUS_USERNAME : ""
 }
 
 def getRepositoryPassword() {
-    return getEnvValueOrEmpty("PRIVATE_NEXUS_PASSWORD")
+    return hasProperty('SONATYPE_NEXUS_PASSWORD') ? SONATYPE_NEXUS_PASSWORD : ""
 }
 
 afterEvaluate { project ->
@@ -42,7 +41,7 @@ afterEvaluate { project ->
             mavenAar(MavenPublication) {
                 from components.release
                 groupId GROUP
-                version versionName
+                version VERSION_NAME
                 afterEvaluate {
                     artifact sourcesJar
                     artifact javadocJar
@@ -76,7 +75,7 @@ afterEvaluate { project ->
 
         repositories {
             maven {
-                url isRelease ? getReleaseRepository() : getSnapshotRepository()
+                url isReleaseBuild() ? getReleaseRepository() : getSnapshotRepository()
                 credentials {
                     username = getRepositoryUsername()
                     password = getRepositoryPassword()
