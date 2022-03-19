@@ -1,4 +1,4 @@
-## Depricated
+## Deprecated
 New https://gitlab.vestabankdev.ru/android/ScrollingPagerIndicator
 
 [![Maven Central][img version shield]][maven]
